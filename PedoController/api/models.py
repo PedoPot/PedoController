@@ -9,6 +9,18 @@ class Pedophile(models.Model):
     def __str__(self):
         socialNetwork = SocialNetwork.objects.get(id=self.socialNetwork.id)
         return self.nickname + " - " + socialNetwork.name
+    
+    def get_score(self):
+        return self.score
+    
+    def get_nickname(self):
+        return self.nickname
+    
+    def get_social_network(self):
+        return self.socialNetwork
+    
+    def get_id(self):
+        return self.id
 
 class Api(models.Model):
     id              = models.AutoField(primary_key=True)
@@ -19,6 +31,18 @@ class Api(models.Model):
     def __str__(self):
         socialNetwork = SocialNetwork.objects.get(id=self.socialNetwork.id)
         return self.name + " - " + socialNetwork.name
+    
+    def get_id(self):
+        return self.id
+    
+    def get_social_network(self):
+        return self.socialNetwork
+    
+    def get_name(self):
+        return self.name
+    
+    def get_token(self):
+        return self.token
 
 class Baiter(models.Model):
     id              = models.AutoField(primary_key=True)
@@ -38,6 +62,36 @@ class Baiter(models.Model):
     
     gender     = models.CharField(max_length=10, choices=GENDER_CHOICES)
     
+    def get_id(self):
+        return self.id
+    
+    def get_social_network(self):
+        return self.socialNetwork
+    
+    def get_username(self):
+        return self.username
+    
+    def get_full_name(self):
+        return self.fullName
+    
+    def get_email(self):
+        return self.email
+    
+    def get_password(self):
+        return self.password
+    
+    def get_bio(self):
+        return self.bio
+    
+    def get_location(self):
+        return self.location
+    
+    def get_birth_date(self):
+        return self.birthDate
+    
+    def get_gender(self):
+        return self.gender
+    
     def __str__(self):
         socialNetwork = SocialNetwork.objects.get(id=self.socialNetwork.id)
         return self.username + " - " + self.fullName + " - " + socialNetwork.name
@@ -47,6 +101,12 @@ class SocialNetwork(models.Model):
     name            = models.CharField(max_length=255)
     
     def __str__(self):
+        return self.name
+    
+    def get_id(self):
+        return self.id
+    
+    def get_name(self):
         return self.name
 
 class Conversation(models.Model):
@@ -58,6 +118,15 @@ class Conversation(models.Model):
         baiter = Baiter.objects.get(id=self.baiter.id)
         pedophile = Pedophile.objects.get(id=self.pedophile.id)
         return f"{baiter.username} - {pedophile.nickname}"
+    
+    def get_id(self):
+        return self.id
+    
+    def get_baiter(self):
+        return self.baiter
+    
+    def get_pedophile(self):
+        return self.pedophile
 
 class Message(models.Model):
     id              = models.AutoField(primary_key=True)
@@ -75,3 +144,18 @@ class Message(models.Model):
     
     def __str__(self):
         return f"{self.conversation} - {self.sender_type} - {self.date}"
+    
+    def get_id(self):
+        return self.id
+    
+    def get_conversation(self):
+        return self.conversation
+    
+    def get_message(self):
+        return self.message
+    
+    def get_date(self):
+        return self.date
+    
+    def get_sender_type(self):
+        return self.sender_type

@@ -23,7 +23,9 @@ urlpatterns = [
     path('conversations/findAll', views.find_all_conversations, name='findAllConversations'),
     path('conversations/findBy', views.find_by_conversations, name='findByConversations'),
     
-    path('messages/create', views.create_message, name='createMessage'), 
+    #path('messages/create', views.create_message, name='createMessage'),
+    path('messages/create/ai', views.create_ai_message, name='createMessage'), 
+    path('messages/create/pedophile', views.create_pedophile_message, name='createMessage'), 
     path('messages/update', views.update_message, name='updateMessage'),
     path('messages/delete', views.delete_message, name='deleteMessage'),
     path('messages/findOne', views.find_one_message, name='findOneMessage'),

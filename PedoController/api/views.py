@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from .models import *
 from .serializers import *
 from django.shortcuts import render
+import requests
 
 #%% # Pedophile Views
 
@@ -243,8 +244,8 @@ Returns:
 """
 @api_view(['GET'])
 def find_all_apis(request):
-    api = Api.objects.all()
-    serializer = ApiSerializer(api, many=True)
+    apis = Api.objects.all()
+    serializer = ApiSerializer(apis, many=True)
     return Response(serializer.data)
 
 """
@@ -274,6 +275,23 @@ def find_by_apis(request):
     serializer = ApiSerializer(apis, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def api_start(request):
+    apis = Api.objects.all()
+    url = "http://127.0.0.1:9341/pedoconnector/connector/start"
+    headers = {
+        "Content-Type": "application/json",
+    }
+    for api in apis:
+        payload = {
+            "connector": api.name,
+            "token": api.token
+        }
+        try:
+            response = requests.post(url, json=payload, headers=headers)
+            response.raise_for_status()
+        except requests.RequestException as e:
+            print(f"error request: {e}")
 
 #%% # Baiter Views
 
@@ -548,16 +566,44 @@ Parameters:
         - conversation (int): The ID of the associated Conversation.
         - message (str): The content of the Message.
         - date (datetime): The date of the Message.
+        - sender_type (str): The type of sender (assistant, user, system).
 Returns:
     - Response : Data
 """
-@api_view(['POST'])
-def create_message(request):
-    serializer = MessageSerializer(data=request.data)
+def create_message(data):
+    serializer = MessageSerializer(data)
+
     if serializer.is_valid():
         serializer.save()
+        url = "http://127.0.0.1:9341/pedoconnector/sendDirectMessage"
+        headers = {
+            "Content-Type": "application/json",
+        }
+        payload = {
+            'connector': str,
+            'token': str,
+            'user_id': str,
+            'message': str,
+        }
+        try:
+            response = requests.post(url, json=payload, headers=headers)
+            response.raise_for_status()
+        except requests.RequestException as e:
+            print(f"error request: {e}")
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
+
+@api_view(['POST'])
+def create_ai_message(request):
+    data=request.data
+    data['sender_type'] = 'assistant'
+    create_message(data)
+
+@api_view(['POST'])
+def create_pedophile_message(request):
+    data=request.data
+    data['sender_type'] = 'user'
+    create_message(data)
 
 """
 Function: update_message
