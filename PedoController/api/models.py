@@ -55,23 +55,23 @@ class Conversation(models.Model):
     pedophile       = models.ForeignKey('Pedophile', on_delete=models.CASCADE)
     
     def __str__(self):
-        baiter = Baiter.objects.get(id=self.Baiter.id)
-        pedophile = Pedophile.objects.get(id=self.Pedophile.id)
+        baiter = Baiter.objects.get(id=self.baiter.id)
+        pedophile = Pedophile.objects.get(id=self.pedophile.id)
         return f"{baiter.username} - {pedophile.nickname}"
 
 class Message(models.Model):
     id              = models.AutoField(primary_key=True)
-    converation     = models.ForeignKey('Conversation', on_delete=models.CASCADE)
+    conversation     = models.ForeignKey('Conversation', on_delete=models.CASCADE)
     message         = models.CharField(max_length=255)
     date            = models.DateTimeField()
     
     SENDER_CHOICES = [
         ('assistant', 'Baiter'),
         ('user', 'Pedophile'),
-        ('systeme', 'Systeme'),
+        ('system', 'System'),
     ]
     
     sender_type     = models.CharField(max_length=10, choices=SENDER_CHOICES)
     
     def __str__(self):
-        return f"{self.converation} - {self.sender_type} - {self.date}"
+        return f"{self.conversation} - {self.sender_type} - {self.date}"
