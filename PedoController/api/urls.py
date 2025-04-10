@@ -40,7 +40,7 @@ urlpatterns = [
     path('apis/create', views.create_api, name='apiCreate'), 
     path('apis/update', views.update_api, name='apiUpdate'),
     path('apis/delete', views.delete_api, name='apiDelete'),
-    path('apis/findOne', views.get_message, name='apiFindOne'),
-    path('apis/findAll', views.list_messages, name='apiFindAll'),
-    path('apis/findBy', views.list_some_messages, name='apiFindBy'),
+    path('apis/findOne', views.get_api, name='apiFindOne'),
+    path('apis/findAll', views.list_apis, name='apiFindAll'),
+    path('apis/findBy', views.list_some_apis, name='apiFindBy'),
 ]

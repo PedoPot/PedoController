@@ -2,7 +2,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
-from django.http import JsonResponse
 from django.shortcuts import render
 
 #%% # Pedophile Views
@@ -243,7 +242,7 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def list_api(request):
+def list_apis(request):
     api = Api.objects.all()
     serializer = ApiSerializer(api, many=True)
     return Response(serializer.data)
