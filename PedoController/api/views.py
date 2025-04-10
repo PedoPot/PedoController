@@ -72,7 +72,7 @@ def delete_pedophile(id):
 
 
 """
-Function: get_pedophile
+Function: find_one_pedophile
 Description: Get one pedophile with the id.
 Method: GET
 Parameters:
@@ -81,7 +81,7 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def get_pedophile(request):
+def find_one_pedophile(request):
     try:
         id = request.GET.get('id')
         pedophile = Pedophile.objects.get(id=id)
@@ -91,7 +91,7 @@ def get_pedophile(request):
     return Response(serializer.data)
 
 """
-Function: list_pedophiles
+Function: find_all_pedophiles
 Description: Get all pedophiles.
 Method: GET
 Parameters:
@@ -99,14 +99,14 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def list_pedophiles(request):
+def find_all_pedophiles(request):
     pedophiles = Pedophile.objects.all()
     serializer = PedophileSerializer(pedophiles, many=True)
     return Response(serializer.data)
 
 
 """
-Function: list_some_pedophiles
+Function: find_by_pedophiles
 Description: Get some pedophiles based on filters.
 Method: POST
 Parameters:
@@ -122,7 +122,7 @@ Returns:
     - Response : Data
 """
 @api_view(['POST'])
-def list_some_pedophiles(request):
+def find_by_pedophiles(request):
     filters = {}
     if 'id' in request.data:
         filters['id'] = request.data['id']
@@ -215,7 +215,7 @@ def delete_api(id):
 
 
 """
-Function: get_api
+Function: find_one_api
 Description: Get one api with the id.
 Method: GET
 Parameters:
@@ -224,7 +224,7 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def get_api(request):
+def find_one_api(request):
     try:
         id = request.GET.get('id')
         api = Api.objects.get(id=id)
@@ -234,7 +234,7 @@ def get_api(request):
     return Response(serializer.data)
 
 """
-Function: list_api
+Function: find_all_api
 Description: Get all api.
 Method: GET
 Parameters:
@@ -242,13 +242,13 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def list_apis(request):
+def find_all_apis(request):
     api = Api.objects.all()
     serializer = ApiSerializer(api, many=True)
     return Response(serializer.data)
 
 """
-Function: list_some_apis
+Function: find_by_apis
 Description: Get some api based on filters.
 Method: POST
 Parameters:
@@ -261,7 +261,7 @@ Returns:
     - Response : Data
 """
 @api_view(['POST'])
-def list_some_apis(request):
+def find_by_apis(request):
     filters = {}
     if 'id' in request.data:
         filters['id'] = request.data['id']
@@ -354,7 +354,7 @@ def delete_baiter(request):
     return Response({'message': 'Baiter deleted successfully'}, status=204)
 
 """
-Function: get_baiter
+Function: find_one_baiter
 Description: Get one Baiter with the id.
 Method: GET
 Parameters:
@@ -363,7 +363,7 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def get_baiter(request):
+def find_one_baiter(request):
     try:
         id = request.GET.get('id')
         baiter = Baiter.objects.get(id=id)
@@ -373,7 +373,7 @@ def get_baiter(request):
     return Response(serializer.data)
 
 """
-Function: list_baiters
+Function: find_all_baiters
 Description: Get all Baiters.
 Method: GET
 Parameters:
@@ -381,13 +381,13 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def list_baiters(request):
+def find_all_baiters(request):
     baiters = Baiter.objects.all()
     serializer = BaiterSerializer(baiters, many=True)
     return Response(serializer.data)
 
 """
-Function: list_some_baiters
+Function: find_by_baiters
 Description: Get some Baiters based on filters.
 Method: POST
 Parameters:
@@ -401,7 +401,7 @@ Returns:
     - Response : Data
 """
 @api_view(['POST'])
-def list_some_baiters(request):
+def find_by_baiters(request):
     filters = {}
     if 'id' in request.data:
         filters['id'] = request.data['id']
@@ -482,7 +482,7 @@ def delete_social_network(request):
     return Response({'message': 'SocialNetwork deleted successfully'}, status=204)
 
 """
-Function: get_social_network
+Function: find_one_social_network
 Description: Get one SocialNetwork with the id.
 Method: GET
 Parameters:
@@ -491,7 +491,7 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def get_social_network(request):
+def find_one_social_network(request):
     try:
         id = request.GET.get('id')
         social_network = SocialNetwork.objects.get(id=id)
@@ -501,7 +501,7 @@ def get_social_network(request):
     return Response(serializer.data)
 
 """
-Function: list_social_networks
+Function: find_all_social_networks
 Description: Get all SocialNetworks.
 Method: GET
 Parameters:
@@ -509,13 +509,13 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def list_social_networks(request):
+def find_all_social_networks(request):
     social_networks = SocialNetwork.objects.all()
     serializer = SocialNetworkSerializer(social_networks, many=True)
     return Response(serializer.data)
 
 """
-Function: list_some_social_networks
+Function: find_by_social_networks
 Description: Get some SocialNetworks based on filters.
 Method: POST
 Parameters:
@@ -526,7 +526,7 @@ Returns:
     - Response : Data
 """
 @api_view(['POST'])
-def list_some_social_networks(request):
+def find_by_social_networks(request):
     filters = {}
     if 'id' in request.data:
         filters['id'] = request.data['id']
@@ -604,7 +604,7 @@ def delete_message(request):
     return Response({'message': 'Message deleted successfully'}, status=204)
 
 """
-Function: get_message
+Function: find_one_message
 Description: Get one Message with the id.
 Method: GET
 Parameters:
@@ -613,7 +613,7 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def get_message(request):
+def find_one_message(request):
     try:
         id = request.GET.get('id')
         message = Message.objects.get(id=id)
@@ -623,7 +623,7 @@ def get_message(request):
     return Response(serializer.data)
 
 """
-Function: list_messages
+Function: find_all_messages
 Description: Get all Messages.
 Method: GET
 Parameters:
@@ -631,13 +631,13 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def list_messages(request):
+def find_all_messages(request):
     messages = Message.objects.all()
     serializer = MessageSerializer(messages, many=True)
     return Response(serializer.data)
 
 """
-Function: list_some_messages
+Function: find_by_messages
 Description: Get some Messages based on filters.
 Method: POST
 Parameters:
@@ -649,7 +649,7 @@ Returns:
     - Response : Data
 """
 @api_view(['POST'])
-def list_some_messages(request):
+def find_by_messages(request):
     filters = {}
     if 'id' in request.data:
         filters['id'] = request.data['id']
@@ -729,7 +729,7 @@ def delete_conversation(request):
     return Response({'message': 'conversation deleted successfully'}, status=204)
 
 """
-Function: get_conversation
+Function: find_one_conversation
 Description: Get one Conversation with the id.
 Method: GET
 Parameters:
@@ -738,7 +738,7 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def get_conversation(request):
+def find_one_conversation(request):
     try:
         id = request.GET.get('id')
         conversation = Conversation.objects.get(id=id)
@@ -748,7 +748,7 @@ def get_conversation(request):
     return Response(serializer.data)
 
 """
-Function: list_conversations
+Function: find_all_conversations
 Description: Get all Conversations.
 Method: GET
 Parameters:
@@ -756,13 +756,13 @@ Returns:
     - Response : Data
 """
 @api_view(['GET'])
-def list_conversations(request):
+def find_all_conversations(request):
     conversation = Conversation.objects.all()
     serializer = ConversationSerializer(conversation, many=True)
     return Response(serializer.data)
 
 """
-Function: list_some_conversations
+Function: find_by_conversations
 Description: Get some conversation based on filters.
 Method: POST
 Parameters:
@@ -774,7 +774,7 @@ Returns:
     - Response : Data
 """
 @api_view(['POST'])
-def list_some_conversations(request):
+def find_by_conversations(request):
     filters = {}
     if 'id' in request.data:
         filters['id'] = request.data['id']
