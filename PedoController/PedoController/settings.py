@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'api'
+    'orchestrator',
 ]
 
 REST_FRAMEWORK = {
@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'PedoController.urls'
+ROOT_URLCONF = 'pedocontroller.urls'
 
 TEMPLATES = [
     {
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'PedoController.wsgi.application'
+WSGI_APPLICATION = 'pedocontroller.wsgi.application'
 
 
 # Database

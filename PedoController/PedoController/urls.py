@@ -19,5 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pedopot/', include('api.urls')),  # Add API routes
+    path('pedocontroller/', include('orchestrator.urls')),  # Add API routes
 ]
