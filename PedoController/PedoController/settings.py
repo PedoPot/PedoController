@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'PedoController.urls'
+ROOT_URLCONF = 'pedocontroller.urls'
 
 TEMPLATES = [
     {
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'PedoController.wsgi.application'
+WSGI_APPLICATION = 'pedocontroller.wsgi.application'
 
 
 # Database
