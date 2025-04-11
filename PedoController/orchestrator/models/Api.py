@@ -8,8 +8,7 @@ class Api(models.Model):
     token           = models.CharField(max_length=255)
     
     def __str__(self):
-        socialNetwork = SocialNetwork.objects.get(id=self.socialNetwork.id)
-        return self.name + " - " + socialNetwork.name
+        return self.name + " - " + self.socialNetwork.name
     
     def get_id(self):
         return self.id

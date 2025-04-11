@@ -50,5 +50,4 @@ class Baiter(models.Model):
         return self.gender
     
     def __str__(self):
-        socialNetwork = SocialNetwork.objects.get(id=self.socialNetwork.id)
-        return self.username + " - " + self.fullName + " - " + socialNetwork.name
+        return self.username + " - " + self.fullName + " - " + self.socialNetwork.name
