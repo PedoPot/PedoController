@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from api.models import SocialNetwork
-from api.serializers import *
+from orchestrator.models import SocialNetwork
+from orchestrator.serializers import SocialNetworkSerializer
 from django.shortcuts import render
 import requests
 

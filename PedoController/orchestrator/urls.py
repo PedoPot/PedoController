@@ -1,5 +1,5 @@
 from django.urls import path
-from api.views import *
+from orchestrator.views import *
 
 urlpatterns = [ 
     path('pedophiles/create', create_pedophile, name='createPedophile'), 

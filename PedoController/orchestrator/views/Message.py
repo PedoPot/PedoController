@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from api.models import Message
-from api.serializers import *
+from orchestrator.models import Message
+from orchestrator.serializers import MessageSerializer
 from django.shortcuts import render
 import requests
 """

@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from api.models import Baiter as BaiterModel
-from api.serializers import *
+from orchestrator.models import Baiter as BaiterModel
+from orchestrator.serializers import BaiterSerializer
 from django.shortcuts import render
 import requests
 

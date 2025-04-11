@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from api.models import Pedophile as PedophileModel
-from api.serializers import *
+from orchestrator.models import Pedophile as PedophileModel
+from orchestrator.serializers import PedophileSerializer
 from django.shortcuts import render
 import requests
 

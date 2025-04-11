@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from api.models import Api
-from api.serializers import *
+from orchestrator.models import Api
+from orchestrator.serializers import ApiSerializer
 from django.shortcuts import render
 import requests
 
@@ -45,7 +45,7 @@ def update_api(request):
         api = Api.objects.get(id=request.data['id'])
     except Api.DoesNotExist:
         return Response({'error': 'api not found'}, status=404)
-    serializer = PedophileSerializer(api, data=request.data)
+    serializer = ApiSerializer(api, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
