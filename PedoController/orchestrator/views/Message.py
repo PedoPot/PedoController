@@ -31,6 +31,9 @@ def create_ai_message(request):
     data['sender_type'] = 'assistant'
     try:
         response = create_message(data)
+       
+        if response.status_code != 201:
+            return response
         
         url = "http://127.0.0.1:9341/pedoconnector/sendDirectMessage"
         headers = {
