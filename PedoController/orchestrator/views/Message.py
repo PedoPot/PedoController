@@ -4,6 +4,7 @@ from orchestrator.models import Message
 from orchestrator.serializers import MessageSerializer
 from django.shortcuts import render
 import requests
+import django
 
 """
 Function: create_message
@@ -52,8 +53,13 @@ def create_ai_message(request):
         
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
-    except Exception as e:
-        return Response({'error': str(e)}, status=500)
+    
+    except requests.exceptions.RequestException as e:
+        return Response({'error': 'Failed to send the message to the external API', 'details': str(e)}, status=502)
+    except django.db.models.ObjectDoesNotExist as e:
+        return Response({'error': 'Message or related data not found', 'details': str(e)}, status=404)
+    except KeyError as e:
+        return Response({'error': 'Missing required data', 'details': str(e)}, status=400)
     return Response({'message': 'Message created successfully'}, status=201)
 
 @api_view(['POST'])
