@@ -4,6 +4,8 @@ from orchestrator.models import Message
 from orchestrator.serializers import MessageSerializer
 from django.shortcuts import render
 import requests
+import django
+
 """
 Function: create_message
 Description: Creates a new Message object based on the provided data.
@@ -18,39 +20,53 @@ Returns:
     - Response : Data
 """
 def create_message(data):
-    serializer = MessageSerializer(data)
-
+    serializer = MessageSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
-        url = "http://127.0.0.1:9341/pedoconnector/sendDirectMessage"
-        headers = {
-            "Content-Type": "application/json",
-        }
-        payload = {
-            'connector': str,
-            'token': str,
-            'user_id': str,
-            'message': str,
-        }
-        try:
-            response = requests.post(url, json=payload, headers=headers)
-            response.raise_for_status()
-        except requests.RequestException as e:
-            print(f"error request: {e}")
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
 
 @api_view(['POST'])
 def create_ai_message(request):
-    data=request.data
+    data = request.data.copy()
     data['sender_type'] = 'assistant'
-    create_message(data)
+    try:
+        response = create_message(data)
+       
+        if response.status_code != 201:
+            return response
+        
+        url = "http://127.0.0.1:9341/pedoconnector/sendDirectMessage"
+        headers = {
+            "Content-Type": "application/json",
+        }
+        
+        message = Message.objects.get(id=response.data['id'])
+        conversation = message.get_conversation()
+        
+        payload = {
+            'connector': conversation.get_baiter().get_api().get_name(),
+            'token': conversation.get_baiter().get_api().get_token(),
+            'user_id': conversation.get_pedophile().get_user_socialNetwork_id(),
+            'message': message.get_message(),
+        }
+        
+        response = requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+    
+    except requests.exceptions.RequestException as e:
+        return Response({'error': 'Failed to send the message to the external API', 'details': str(e)}, status=502)
+    except django.db.models.ObjectDoesNotExist as e:
+        return Response({'error': 'Message or related data not found', 'details': str(e)}, status=404)
+    except KeyError as e:
+        return Response({'error': 'Missing required data', 'details': str(e)}, status=400)
+    return Response({'message': 'Message created successfully'}, status=201)
 
 @api_view(['POST'])
 def create_pedophile_message(request):
     data=request.data
     data['sender_type'] = 'user'
-    create_message(data)
+    return create_message(data)
 
 """
 Function: update_message
