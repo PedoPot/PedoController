@@ -4,6 +4,9 @@ from orchestrator.models import Message
 from orchestrator.serializers import MessageSerializer
 from django.shortcuts import render
 import requests
+from orchestrator.models import Baiter
+
+
 """
 Function: create_message
 Description: Creates a new Message object based on the provided data.
@@ -18,7 +21,7 @@ Returns:
     - Response : Data
 """
 def create_message(data):
-    serializer = MessageSerializer(data)
+    serializer = MessageSerializer(data=data)
 
     if serializer.is_valid():
         serializer.save()
@@ -37,7 +40,9 @@ def create_message(data):
             response.raise_for_status()
         except requests.RequestException as e:
             print(f"error request: {e}")
+        print("Serializer errors:", serializer.errors)
         return Response(serializer.data, status=201)
+    print("Serializer errors:", serializer.errors)
     return Response(serializer.errors, status=400)
 
 @api_view(['POST'])
@@ -154,3 +159,11 @@ def find_by_messages(request):
     messages = Message.objects.filter(**filters)
     serializer = MessageSerializer(messages, many=True)
     return Response(serializer.data)
+
+def initFirstMessage(idConversation, idBaiter):
+    data = {}
+    data['conversation'] = idConversation
+    data['sender_type'] = 'system'
+    data['date'] = '1970-01-01T00:00:00Z'
+    data['message'] = Baiter.objects.get(id=idBaiter).get_context()
+    return create_message(data)

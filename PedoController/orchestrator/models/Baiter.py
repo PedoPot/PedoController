@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from . import SocialNetwork
 
 class Baiter(models.Model):
     id              = models.AutoField(primary_key=True)
@@ -18,7 +19,8 @@ class Baiter(models.Model):
     ]
     
     gender     = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    
+    context    = models.CharField(max_length=1000, null=True)
+
     def get_id(self):
         return self.id
     
@@ -50,7 +52,7 @@ class Baiter(models.Model):
         return self.gender
     
     def __str__(self):
-        return self.username + " - " + self.fullName + " - " + self.api.socialNetwork.name
+        return self.username + " - " + self.fullName + " - " + self.socialNetwork.name
     
     # context is the description of the baiter ex: Jean, enfant de 14 ans qui aime la musique et les tracteurs
     def set_context(self):

@@ -4,6 +4,7 @@ from orchestrator.models import Conversation as ConversationModel
 from orchestrator.serializers import ConversationSerializer, MessageSerializer
 from django.shortcuts import render
 import requests
+from orchestrator.views.Message import initFirstMessage
 
 
 """
@@ -22,6 +23,14 @@ def create_conversation(request):
     serializer = ConversationSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        try:
+            print(initFirstMessage(
+                serializer.data['id'],
+                serializer.data['baiter']
+            ))
+        except Exception as e:
+            print(f"Error initializing first message: {e}")
+            
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
 
