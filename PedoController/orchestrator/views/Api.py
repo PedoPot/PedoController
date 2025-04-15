@@ -5,7 +5,6 @@ from orchestrator.serializers import ApiSerializer
 from django.shortcuts import render
 import requests
 
-
 """
 Function: create_api
 Description: Creates a new Api object based on the provided data.
@@ -133,10 +132,13 @@ def find_by_apis(request):
 @api_view(['GET'])
 def api_start(request):
     apis = Api.objects.all()
-    url = "http://127.0.0.1:9341/pedoconnector/connector/start"
+    url = "http://pedo-connector:9341/connector/start"
     headers = {
         "Content-Type": "application/json",
     }
+
+    results = []  
+
     for api in apis:
         payload = {
             "connector": api.name,
@@ -145,5 +147,16 @@ def api_start(request):
         try:
             response = requests.post(url, json=payload, headers=headers)
             response.raise_for_status()
+            results.append({
+                "connector": api.name,
+                "status": "success",
+                "response": response.json()
+            })
         except requests.RequestException as e:
-            print(f"error request: {e}")
+            results.append({
+                "connector": api.name,
+                "status": "error",
+                "error": str(e)
+            })
+
+    return Response(results, status=200)
