@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$x^#ul%^_7byvx!2+83&yjcr=j!^ktv$&m63io%0hf8!tn23h_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pedo-stocker', 'pedo-connector', 'pedo-observer', 'pedo-hunter-api', 'pedo-meter-api', 'pedo-controller', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'PedoStocker',
         'USER': 'user',
         'PASSWORD': 'password',
-        'HOST': 'pedo-stocker',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
