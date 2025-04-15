@@ -45,4 +45,5 @@ urlpatterns = [
     path('apis/findOne', find_one_api, name='apiFindOne'),
     path('apis/findAll', find_all_apis, name='apiFindAll'),
     path('apis/findBy', find_by_apis, name='apiFindBy'),
+    path('apis/start', api_start, name='apiStart'),
 ]
