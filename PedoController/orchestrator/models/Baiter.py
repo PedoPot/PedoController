@@ -60,7 +60,7 @@ class Baiter(models.Model):
     
     # context is the description of the baiter ex: Jean, enfant de 14 ans qui aime la musique et les tracteurs
     def set_context(self):
-        self.context = f"{self.fullName}, child of {self.calculate_age()} years old who live in {self.location}. {self.fullName} descripe himself : {self.bio}"
+        self.context = f"{self.fullName}, child of {self.calculate_age()} years old who live in {self.location}. {self.fullName} describe himself : {self.bio}"
         self.save()
 
     def calculate_age(self):
