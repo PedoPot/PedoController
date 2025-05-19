@@ -7,12 +7,6 @@ class PedophileSerializer(serializers.ModelSerializer):
         model = Pedophile
         fields = '__all__'
         
-class ApiSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Api
-        fields = '__all__'
-        
 class BaiterSerializer(serializers.ModelSerializer):
     
     class Meta:
