@@ -24,8 +24,9 @@ urlpatterns = [
     path('conversations/findBy', find_by_conversations, name='findByConversations'),
     
     #path('messages/create', create_message, name='createMessage'),
-    path('messages/create/ai', create_ai_message, name='createMessage'), 
-    path('messages/create/pedophile', create_pedophile_message, name='createMessage'), 
+    path('messages/initFirstMessage', find_by_messages, name='initFirstMessage'),
+    path('messages/create/ai', create_ai_message, name='create_ai_message'), 
+    path('messages/create/pedophile', create_pedophile_message, name='create_pedophile_message'), 
     path('messages/update', update_message, name='updateMessage'),
     path('messages/delete', delete_message, name='deleteMessage'),
     path('messages/findOne', find_one_message, name='findOneMessage'),
@@ -38,12 +39,4 @@ urlpatterns = [
     path('socialnetworks/findOne', find_one_social_network, name='findOneSocialNetwork'),
     path('socialnetworks/findAll', find_all_social_networks, name='findAllSocialNetworks'),
     path('socialnetworks/findBy', find_by_social_networks, name='findBySocialNetworks'),
-    
-    path('apis/create', create_api, name='apiCreate'), 
-    path('apis/update', update_api, name='apiUpdate'),
-    path('apis/delete', delete_api, name='apiDelete'),
-    path('apis/findOne', find_one_api, name='apiFindOne'),
-    path('apis/findAll', find_all_apis, name='apiFindAll'),
-    path('apis/findBy', find_by_apis, name='apiFindBy'),
-    path('apis/start', api_start, name='apiStart'),
 ]

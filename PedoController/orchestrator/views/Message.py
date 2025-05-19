@@ -1,10 +1,11 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from orchestrator.models import Message
+from orchestrator.models import Conversation
 from orchestrator.serializers import MessageSerializer
 from django.shortcuts import render
 import requests
-import django
+from orchestrator.models import Baiter
 
 """
 Function: create_message
@@ -21,52 +22,76 @@ Returns:
 """
 def create_message(data):
     serializer = MessageSerializer(data=data)
+
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=201)
+    
     return Response(serializer.errors, status=400)
+    
 
 @api_view(['POST'])
 def create_ai_message(request):
-    data = request.data.copy()
+   
+    data = request.POST.copy()
     data['sender_type'] = 'assistant'
-    try:
-        response = create_message(data)
-       
-        if response.status_code != 201:
-            return response
-        
-        url = "http://127.0.0.1:9341/pedoconnector/sendDirectMessage"
+    response = create_message(data)
+
+    if response.status_code == 201:
+        url = "http://pedo-connector:9341/sendDirectMessage"
         headers = {
             "Content-Type": "application/json",
         }
         
-        message = Message.objects.get(id=response.data['id'])
-        conversation = message.get_conversation()
+        conversation = Conversation.objects.get(id=response.data['conversation'])
+        social_network = conversation.get_social_network()
         
         payload = {
-            'connector': conversation.get_baiter().get_api().get_name(),
-            'token': conversation.get_baiter().get_api().get_token(),
-            'user_id': conversation.get_pedophile().get_user_socialNetwork_id(),
-            'message': message.get_message(),
+            "connector": social_network.get_name(),
+            "token": social_network.get_token(),
+            "user_id": conversation.get_baiter().get_id(),
+            "message": response.data['message'] 
         }
-        
-        response = requests.post(url, json=payload, headers=headers)
-        response.raise_for_status()
+        try:
+            response = requests.post(url, json=payload, headers=headers)
+            response.raise_for_status()
+        except requests.RequestException as e:
+            print(f"error request: {e}")
     
-    except requests.exceptions.RequestException as e:
-        return Response({'error': 'Failed to send the message to the external API', 'details': str(e)}, status=502)
-    except django.db.models.ObjectDoesNotExist as e:
-        return Response({'error': 'Message or related data not found', 'details': str(e)}, status=404)
-    except KeyError as e:
-        return Response({'error': 'Missing required data', 'details': str(e)}, status=400)
-    return Response({'message': 'Message created successfully'}, status=201)
+    return response
 
 @api_view(['POST'])
 def create_pedophile_message(request):
-    data=request.data
+
+    data = request.POST.copy()
     data['sender_type'] = 'user'
-    return create_message(data)
+    
+    response = create_message(data)
+    if response.status_code == 201:
+        url = "http://pedo-hunter-api:9344/chat"
+        
+        headers = {
+            "Content-Type": "application/json",
+        }
+        filter = {}
+        filter['conversation'] = response.data['conversation']
+        items = find_by_messages_function(filter, order_by='date')
+        payload = {
+            "messages": [
+                {
+                    "role": item['sender_type'],
+                    "content": item['message']
+                }
+                for item in items.data
+            ]
+        }
+        try:
+            response = requests.post(url, json=payload, headers=headers)
+            response.raise_for_status()
+        except requests.RequestException as e:
+            print(f"error request: {e}")
+            
+    return response
 
 """
 Function: update_message
@@ -167,6 +192,20 @@ def find_by_messages(request):
     if 'date' in request.data:
         filters['date'] = request.data['date']
     
+    return find_by_messages_function(filters)
+
+def find_by_messages_function(filters, order_by=None):
     messages = Message.objects.filter(**filters)
+    if order_by:
+        messages = messages.order_by(order_by)
     serializer = MessageSerializer(messages, many=True)
+    print("serializer", serializer.data)
     return Response(serializer.data)
+
+def initFirstMessage(idConversation, idBaiter):
+    data = {}
+    data['conversation'] = idConversation
+    data['sender_type'] = 'system'
+    data['date'] = '1970-01-01T00:00:00Z'
+    data['message'] = Baiter.objects.get(id=idBaiter).get_context()
+    return create_message(data)

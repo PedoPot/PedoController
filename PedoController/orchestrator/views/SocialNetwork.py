@@ -12,6 +12,7 @@ Method: POST
 Parameters:
     - request (HttpRequest): The HTTP request containing the following data in the body:
         - name (str): The name of the SocialNetwork.
+        - token (str): The token for the SocialNetwork.
 Returns:
     - Response : Data
 """
@@ -32,6 +33,7 @@ Parameters:
     - request (HttpRequest): The HTTP request containing the following data in the body:
         - id (int): The unique identifier for the SocialNetwork.
         - name (str): The name of the SocialNetwork.
+        - token (str): The token for the SocialNetwork.
 Returns:
     - Response : Data
 """

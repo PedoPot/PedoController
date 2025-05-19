@@ -1,8 +1,10 @@
 from django.db import models
+from datetime import date
+from . import SocialNetwork
 
 class Baiter(models.Model):
     id              = models.AutoField(primary_key=True)
-    api             = models.ForeignKey('Api', on_delete=models.CASCADE)
+    socialNetwork   = models.ForeignKey('SocialNetwork', on_delete=models.CASCADE, null=True)
     username        = models.CharField(max_length=255)
     fullName        = models.CharField(max_length=255)
     email           = models.CharField(max_length=255)
@@ -18,15 +20,16 @@ class Baiter(models.Model):
     ]
     
     gender     = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    
+    context    = models.CharField(max_length=1000, null=True)
+
     def get_id(self):
         return self.id
     
-    def get_api(self):
-        return self.api
-    
     def get_username(self):
         return self.username
+    
+    def get_social_network(self):
+        return self.socialNetwork
     
     def get_full_name(self):
         return self.fullName
@@ -53,4 +56,16 @@ class Baiter(models.Model):
         return self.context
     
     def __str__(self):
-        return self.username + " - " + self.fullName + " - " + self.api.socialNetwork.name
+        return self.username + " - " + self.fullName + " - " + self.socialNetwork.name
+    
+    # context is the description of the baiter ex: Jean, enfant de 14 ans qui aime la musique et les tracteurs
+    def set_context(self):
+        self.context = f"{self.fullName}, child of {self.calculate_age()} years old who live in {self.location}. {self.fullName} describe himself : {self.bio}"
+        self.save()
+
+    def calculate_age(self):
+        today = date.today()
+        return today.year - self.birthDate.year - ((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
+    
+    def get_context(self):
+        return self.context
