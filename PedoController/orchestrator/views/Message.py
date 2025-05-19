@@ -7,7 +7,6 @@ from django.shortcuts import render
 import requests
 from orchestrator.models import Baiter
 
-
 """
 Function: create_message
 Description: Creates a new Message object based on the provided data.

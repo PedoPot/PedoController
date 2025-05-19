@@ -39,5 +39,4 @@ urlpatterns = [
     path('socialnetworks/findOne', find_one_social_network, name='findOneSocialNetwork'),
     path('socialnetworks/findAll', find_all_social_networks, name='findAllSocialNetworks'),
     path('socialnetworks/findBy', find_by_social_networks, name='findBySocialNetworks'),
-
 ]

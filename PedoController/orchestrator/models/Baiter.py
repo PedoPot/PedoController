@@ -4,7 +4,7 @@ from . import SocialNetwork
 
 class Baiter(models.Model):
     id              = models.AutoField(primary_key=True)
-    socialNetwork   = models.ForeignKey('SocialNetwork', on_delete=models.CASCADE)
+    api             = models.ForeignKey('Api', on_delete=models.CASCADE)
     username        = models.CharField(max_length=255)
     fullName        = models.CharField(max_length=255)
     email           = models.CharField(max_length=255)
@@ -12,6 +12,7 @@ class Baiter(models.Model):
     bio             = models.CharField(max_length=255)
     location        = models.CharField(max_length=255)
     birthDate       = models.DateTimeField()
+    context         = models.CharField(max_length=1000, null=True)
     
     GENDER_CHOICES = [
         ('boy', 'Boy'),
@@ -24,8 +25,8 @@ class Baiter(models.Model):
     def get_id(self):
         return self.id
     
-    def get_social_network(self):
-        return self.socialNetwork
+    def get_api(self):
+        return self.api
     
     def get_username(self):
         return self.username
@@ -50,6 +51,9 @@ class Baiter(models.Model):
     
     def get_gender(self):
         return self.gender
+
+    def get_context(self):
+        return self.context
     
     def __str__(self):
         return self.username + " - " + self.fullName + " - " + self.socialNetwork.name
