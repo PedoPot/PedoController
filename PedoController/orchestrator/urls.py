@@ -8,6 +8,7 @@ urlpatterns = [
     path('pedophiles/findOne', find_one_pedophile, name='findOnePedophile'),
     path('pedophiles/findAll', find_all_pedophiles, name='findAllPedophiles'),
     path('pedophiles/findBy', find_by_pedophiles, name='findByPedophiles'),
+    path('pedophiles/get', get_pedophiles, name='getPedophiles'),
 
     path('baiters/create', create_baiter, name='createBaiter'), 
     path('baiters/update', update_baiter, name='updateBaiter'),
@@ -23,7 +24,7 @@ urlpatterns = [
     path('conversations/findAll', find_all_conversations, name='findAllConversations'),
     path('conversations/findBy', find_by_conversations, name='findByConversations'),
     
-    #path('messages/create', create_message, name='createMessage'),
+    path('messages/create', create_message, name='createMessage'),
     path('messages/initFirstMessage', find_by_messages, name='initFirstMessage'),
     path('messages/create/ai', create_ai_message, name='create_ai_message'), 
     path('messages/create/pedophile', create_pedophile_message, name='create_pedophile_message'), 

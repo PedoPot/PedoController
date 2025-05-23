@@ -143,6 +143,21 @@ def find_by_pedophiles(request):
     if 'socialNetwork' in request.data:
         filters['socialNetwork'] = request.data['socialNetwork']
     
+    return  find_by_pedophiles_function(filters)
+
+def find_by_pedophiles_function(filters, order_by=None):
     pedophiles = PedophileModel.objects.filter(**filters)
+    if order_by:
+        pedophiles = pedophiles.order_by(order_by["name"])
+        if order_by["sort"] == "DESC":
+            pedophiles = pedophiles.reverse()
     serializer = PedophileSerializer(pedophiles, many=True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def get_pedophiles(request):
+    data = find_by_pedophiles(request)
+    first = request.data['numberPage']-1* request.data['numberResults']
+    last = request.data['numberPage'] * request.data['numberResults']
+    data = data[first:last]
+    return Response(data)

@@ -198,8 +198,7 @@ def find_by_messages_function(filters, order_by=None):
     messages = Message.objects.filter(**filters)
     if order_by:
         messages = messages.order_by(order_by)
-    serializer = MessageSerializer(messages, many=True)
-    print("serializer", serializer.data)
+    serializer = MessageSerializer(messages, many=True)    
     return Response(serializer.data)
 
 def initFirstMessage(idConversation, idBaiter):
