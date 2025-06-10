@@ -222,12 +222,11 @@ def compute_score(id):
                 })
             
             conversations_data["conversations"].append({
-                "id": conversation.id,
                 "messages": messages_data
             })
         
         # Send the data to the AI API
-        ai_api_url = "http://localhost:9342/compute-score"
+        ai_api_url = "http://pedo-meter-api/compute-score"
         response = requests.post(ai_api_url, json=conversations_data)
         
         if response.status_code == 200:

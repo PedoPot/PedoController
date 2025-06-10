@@ -38,7 +38,7 @@ def create_ai_message(request):
     response = create_message(data)
 
     if response.status_code == 201:
-        url = "http://pedo-connector:9341/sendDirectMessage"
+        url = "http://pedo-connector/sendDirectMessage"
         headers = {
             "Content-Type": "application/json",
         }
@@ -68,7 +68,7 @@ def create_pedophile_message(request):
     
     response = create_message(data)
     if response.status_code == 201:
-        url = "http://pedo-hunter-api:9344/chat"
+        url = "http://pedo-hunter-api/chat"
         
         headers = {
             "Content-Type": "application/json",
