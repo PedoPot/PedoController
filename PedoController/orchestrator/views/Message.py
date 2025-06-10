@@ -68,7 +68,7 @@ def create_pedophile_message(request):
     
     response = create_message(data)
     if response.status_code == 201:
-        url = "http://pedo-hunter-api/chat"
+        url = "http://pedo-hunter-api:9341/chat"
         
         headers = {
             "Content-Type": "application/json",
