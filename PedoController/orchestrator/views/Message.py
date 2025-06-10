@@ -192,7 +192,7 @@ def find_by_messages(request):
     if 'date' in request.data:
         filters['date'] = request.data['date']
     
-    return find_by_messages_function(filters)
+    return find_by_messages_function(filters, order_by=request.data.get('order_by', None))
 
 def find_by_messages_function(filters, order_by=None):
     messages = Message.objects.filter(**filters)
@@ -208,3 +208,4 @@ def initFirstMessage(idConversation, idBaiter):
     data['date'] = '1970-01-01T00:00:00Z'
     data['message'] = Baiter.objects.get(id=idBaiter).get_context()
     return create_message(data)
+    

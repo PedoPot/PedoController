@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'PedoStocker',
         'USER': 'user',
         'PASSWORD': 'password',
-        'HOST': 'pedo-stocker',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }

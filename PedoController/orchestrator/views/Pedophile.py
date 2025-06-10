@@ -114,8 +114,8 @@ Parameters:
         - nickname (str): The nickname of the Pedophile.
         - socialNetwork (int): The ID of the associated SocialNetwork.
         - score (int, optional): The score of pedophilia
-        - score_min : 10
-        - score_max : 50
+        - score__gte : 10
+        - score__lte : 50
         - score_range : "10,50"
 Returns:
     - Response : Data
