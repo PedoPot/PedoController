@@ -4,6 +4,7 @@ from orchestrator.models import Pedophile as PedophileModel
 from orchestrator.serializers import PedophileSerializer
 from django.shortcuts import render
 import requests
+from orchestrator.models import Conversation, Message
 
 """
 Function: create_pedophile
@@ -161,3 +162,87 @@ def get_pedophiles(request):
     last = request.data['numberPage'] * request.data['numberResults']
     data = data[first:last]
     return Response(data)
+
+"""
+Function: get_score_pedophile
+Description: Get the score of a pedophile.
+Method: POST
+Parameters:
+    - request (HttpRequest): The HTTP request containing the following data in the body:
+        - id (int): The unique identifier for the Pedophile.
+
+Returns:
+    Response: JSON containing the pedophile's score or an error message
+"""
+@api_view(['POST'])
+def get_score_pedophile(request):
+    try:
+        pedophile_id = request.data.get('id')
+        if not pedophile_id:
+            return Response({'error': 'Pedophile ID is required'}, status=400)
+            
+        pedophile = PedophileModel.objects.get(id=pedophile_id)
+        # Call compute_score function to ensure up-to-date score
+        compute_score(pedophile_id)
+        # Refresh pedophile object to get the updated score
+        pedophile.refresh_from_db()
+        return Response({'id': pedophile.id, 'score': pedophile.score})
+    except PedophileModel.DoesNotExist:
+        return Response({'error': 'Pedophile not found'}, status=404)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
+    
+"""
+Function: compute_score
+Description: Compute the score of a pedophile by analyzing their conversations.
+Parameters:
+    - id (int): The unique identifier for the Pedophile.
+
+Returns:
+    bool: True if score was updated successfully, False otherwise
+"""
+def compute_score(id):
+    try:
+        pedophile = PedophileModel.objects.get(id=id)
+        
+        conversations = Conversation.objects.filter(pedophile_id=id)
+        
+        conversations_data = {
+            "conversations": []
+        }
+        
+        for conversation in conversations:
+            messages = Message.objects.filter(conversation=conversation)
+            messages_data = []
+            
+            for message in messages:
+                messages_data.append({
+                    "role": message.role,
+                    "content": message.content
+                })
+            
+            conversations_data["conversations"].append({
+                "id": conversation.id,
+                "messages": messages_data
+            })
+        
+        # Send the data to the AI API
+        ai_api_url = "http://localhost:9342/compute-score"
+        response = requests.post(ai_api_url, json=conversations_data)
+        
+        if response.status_code == 200:
+            # Update the pedophile's score
+            score_data = response.json()
+            pedophile.score = score_data.get("risk_score", 0)
+            pedophile.save()
+            return True
+        else:
+            print(f"Error from AI API: {response.text}")
+            return False
+            
+    except PedophileModel.DoesNotExist:
+        print(f"Pedophile with id {id} not found")
+        return False
+    except Exception as e:
+        print(f"Error computing score: {str(e)}")
+        return False

@@ -9,6 +9,7 @@ urlpatterns = [
     path('pedophiles/findAll', find_all_pedophiles, name='findAllPedophiles'),
     path('pedophiles/findBy', find_by_pedophiles, name='findByPedophiles'),
     path('pedophiles/get', get_pedophiles, name='getPedophiles'),
+    path('pedophiles/getScore', get_score_pedophile, name='getScorePedophile'),
 
     path('baiters/create', create_baiter, name='createBaiter'), 
     path('baiters/update', update_baiter, name='updateBaiter'),
