@@ -157,11 +157,12 @@ def find_by_pedophiles_function(filters, order_by=None):
 
 @api_view(['POST'])
 def get_pedophiles(request):
-    data = find_by_pedophiles(request)
-    first = request.data['numberPage']-1* request.data['numberResults']
+    response = find_by_pedophiles(request)
+    data = response.data  # Extract the data attribute from the Response object
+    first = (request.data['numberPage'] - 1) * request.data['numberResults']
     last = request.data['numberPage'] * request.data['numberResults']
-    data = data[first:last]
-    return Response(data)
+    sliced_data = data[first:last]
+    return Response(sliced_data)
 
 """
 Function: get_score_pedophile
