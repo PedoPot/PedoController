@@ -24,6 +24,7 @@ urlpatterns = [
     path('conversations/findOne', find_one_conversation, name='findOneConversation'),
     path('conversations/findAll', find_all_conversations, name='findAllConversations'),
     path('conversations/findBy', find_by_conversations, name='findByConversations'),
+    path('conversations/get', get_conversations, name='getConversations'),
     
     path('messages/create', create_message, name='createMessage'),
     path('messages/initFirstMessage', initFirstMessage, name='initFirstMessage'),

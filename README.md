@@ -3,65 +3,62 @@
 This document provides a comprehensive listing of all API endpoints in the PedoController system, along with their required parameters and return values.
 
 ## Table of Contents
-- [Subject Profiles](#subject-profiles)
-- [Decoy Profiles](#decoy-profiles)
-- [Conversation Management](#conversation-management)
-- [Messaging System](#messaging-system)
-- [Platform Integration](#platform-integration)
-- [Authentication](#authentication)
-- [System Status](#system-status)
-- [Analytics](#analytics)
+- [Pedophile Endpoints](#pedophile-endpoints)
+- [Baiter Endpoints](#baiter-endpoints)
+- [Conversation Endpoints](#conversation-endpoints)
+- [Message Endpoints](#message-endpoints)
+- [Social Network Endpoints](#social-network-endpoints)
 
-## Subject Profiles
+## Pedophile Endpoints
 
 ### POST `/pedocontroller/pedophiles/create`
-Creates a new subject profile in the database.
+Creates a new pedophile in the database.
 
 **Parameters:**
-- `nickname` (str): Pseudonym of the subject
+- `nickname` (str): Pseudonym of the pedophile
 - `socialNetwork` (int): ID of the associated social network
-- `score` (int, optional): Risk assessment score
+- `score` (int, optional): Pedophilia score
 - `user_socialNetwork_id` (str, optional): User ID on the social network
 
-**Returns:** Created profile object with status 201, or errors with status 400
+**Returns:** Created Pedophile object with status 201, or errors with status 400
 
 ### PUT `/pedocontroller/pedophiles/update`
-Updates an existing subject profile.
+Updates an existing pedophile.
 
 **Parameters:**
-- `id` (int): Unique identifier of the profile
-- `nickname` (str): Pseudonym of the subject
+- `id` (int): Unique identifier of the pedophile
+- `nickname` (str): Pseudonym of the pedophile
 - `socialNetwork` (int): ID of the associated social network
-- `score` (int): Risk assessment score
+- `score` (int): Pedophilia score
 - `user_socialNetwork_id` (str, optional): User ID on the social network
 
-**Returns:** Updated profile object, or error 404 if not found
+**Returns:** Updated Pedophile object, or error 404 if not found
 
 ### DELETE `/pedocontroller/pedophiles/delete`
-Deletes a subject profile.
+Deletes a pedophile.
 
 **Parameters:**
-- `id` (int): Unique identifier of the profile (query parameter)
+- `id` (int): Unique identifier of the pedophile (query parameter)
 
 **Returns:** Status code 204 if successful, 404 if not found
 
 ### GET `/pedocontroller/pedophiles/findOne`
-Retrieves a specific subject profile.
+Retrieves a specific pedophile.
 
 **Parameters:**
-- `id` (int): Unique identifier of the profile (query parameter)
+- `id` (int): Unique identifier of the pedophile (query parameter)
 
-**Returns:** Profile object, or error 404 if not found
+**Returns:** Pedophile object, or error 404 if not found
 
 ### GET `/pedocontroller/pedophiles/findAll`
-Retrieves all subject profiles.
+Retrieves all pedophiles.
 
 **Parameters:** None
 
-**Returns:** List of all profile objects
+**Returns:** List of all Pedophile objects
 
 ### POST `/pedocontroller/pedophiles/findBy`
-Searches for subject profiles based on criteria.
+Searches for pedophiles based on criteria.
 
 **Parameters (all optional):**
 - `id` (int): Unique identifier
@@ -72,29 +69,30 @@ Searches for subject profiles based on criteria.
 - `score_range` (str): Score range in format "min,max"
 - `socialNetwork` (int): ID of the social network
 
-**Returns:** List of matching profile objects
+**Returns:** List of matching Pedophile objects
 
 ### POST `/pedocontroller/pedophiles/get`
-Pagination of subject profile results.
+Pagination of pedophile results.
 
 **Parameters:**
-- `id` (int): Unique identifier
-- `nickname` (str): Pseudonym
-- `score` (int): Exact score
-- `score_min` (int): Minimum score
-- `score_max` (int): Maximum score
-- `score_range` (str): Score range in format "min,max"
-- `socialNetwork` (int): ID of the social network
+- Same parameters as `findBy`
 - `numberPage` (int): Page number
 - `numberResults` (int): Number of results per page
-- `numberResults` (int): Number of results per page
 
-**Returns:** Paginated list of profile objects
+**Returns:** Paginated list of Pedophile objects
 
-## Decoy Profiles
+### POST `/pedocontroller/pedophiles/getScore`
+Retrieves and computes the risk assessment score for a pedophile.
+
+**Parameters:**
+- `id` (int): Unique identifier of the pedophile
+
+**Returns:** Pedophile ID and computed score, or error 404 if not found
+
+## Baiter Endpoints
 
 ### POST `/pedocontroller/baiters/create`
-Creates a new decoy profile.
+Creates a new baiter (decoy).
 
 **Parameters:**
 - `socialNetwork` (int): ID of the associated social network
@@ -106,53 +104,44 @@ Creates a new decoy profile.
 - `location` (str): Location
 - `gender` (str): Gender ('boy' or 'girl')
 - `birthDate` (datetime): Date of birth
-- `context` (str, optional): Decoy context
+- `context` (str, optional): Baiter context
 
-**Returns:** Created decoy object with status 201, or errors with status 400
+**Returns:** Created Baiter object with status 201, or errors with status 400
 
 ### PUT `/pedocontroller/baiters/update`
-Updates an existing decoy profile.
+Updates an existing baiter.
 
 **Parameters:**
-- `id` (int): Unique identifier of the decoy
-- `socialNetwork` (int): ID of the associated social network
-- `username` (str): Username
-- `fullName` (str): Full name
-- `email` (str): Email
-- `password` (str): Password
-- `bio` (str): Biography
-- `location` (str): Location
-- `gender` (str): Gender ('boy' or 'girl')
-- `birthDate` (datetime): Date of birth
-- `context` (str, optional): Decoy context
+- `id` (int): Unique identifier of the baiter
+- Same parameters as for creation
 
-**Returns:** Updated decoy object, or error 404 if not found
+**Returns:** Updated Baiter object, or error 404 if not found
 
 ### DELETE `/pedocontroller/baiters/delete`
-Deletes a decoy profile.
+Deletes a baiter.
 
 **Parameters:**
-- `id` (int): Unique identifier of the decoy (query parameter)
+- `id` (int): Unique identifier of the baiter (query parameter)
 
 **Returns:** Status code 204 if successful, 404 if not found
 
 ### GET `/pedocontroller/baiters/findOne`
-Retrieves a specific decoy profile.
+Retrieves a specific baiter.
 
 **Parameters:**
-- `id` (int): Unique identifier of the decoy (query parameter)
+- `id` (int): Unique identifier of the baiter (query parameter)
 
-**Returns:** Decoy object, or error 404 if not found
+**Returns:** Baiter object, or error 404 if not found
 
 ### GET `/pedocontroller/baiters/findAll`
-Retrieves all decoy profiles.
+Retrieves all baiters.
 
 **Parameters:** None
 
-**Returns:** List of all decoy objects
+**Returns:** List of all Baiter objects
 
 ### POST `/pedocontroller/baiters/findBy`
-Searches for decoy profiles based on criteria.
+Searches for baiters based on criteria.
 
 **Parameters (all optional):**
 - `id` (int): Unique identifier
@@ -161,30 +150,30 @@ Searches for decoy profiles based on criteria.
 - `location` (str): Location
 - `gender` (str): Gender
 
-**Returns:** List of matching decoy objects
+**Returns:** List of matching Baiter objects
 
-## Conversation Management
+## Conversation Endpoints
 
 ### POST `/pedocontroller/conversations/create`
-Creates a new conversation.
+Creates a new conversation and initializes the first message.
 
 **Parameters:**
-- `baiter` (int): ID of the associated decoy
-- `pedophile` (int): ID of the associated subject
+- `baiter` (int): ID of the associated baiter
+- `pedophile` (int): ID of the associated pedophile
 - `socialNetwork` (int): ID of the social network
 
-**Returns:** Created conversation object with status 201, or errors with status 400
+**Returns:** Created Conversation object with status 201, or errors with status 400
 
 ### PUT `/pedocontroller/conversations/update`
 Updates an existing conversation.
 
 **Parameters:**
 - `id` (int): Unique identifier of the conversation
-- `baiter` (int): ID of the associated decoy
-- `pedophile` (int): ID of the associated subject
+- `baiter` (int): ID of the associated baiter
+- `pedophile` (int): ID of the associated pedophile
 - `socialNetwork` (int): ID of the social network
 
-**Returns:** Updated conversation object, or error 404 if not found
+**Returns:** Updated Conversation object, or error 404 if not found
 
 ### DELETE `/pedocontroller/conversations/delete`
 Deletes a conversation.
@@ -207,19 +196,29 @@ Retrieves all conversations.
 
 **Parameters:** None
 
-**Returns:** List of all conversation objects
+**Returns:** List of all Conversation objects
 
 ### POST `/pedocontroller/conversations/findBy`
 Searches for conversations based on criteria.
 
 **Parameters (all optional):**
 - `id` (int): Unique identifier
-- `baiter` (int): ID of the decoy
-- `pedophile` (int): ID of the subject
+- `baiter` (int): ID of the baiter
+- `pedophile` (int): ID of the pedophile
 
-**Returns:** List of matching conversation objects
+**Returns:** List of matching Conversation objects
 
-## Messaging System
+### POST `/pedocontroller/conversations/get`
+Pagination of conversation results with filtering.
+
+**Parameters:**
+- Same parameters as `findBy`
+- `numberPage` (int): Page number
+- `numberResults` (int): Number of results per page
+
+**Returns:** Paginated list of Conversation objects
+
+## Message Endpoints
 
 ### POST `/pedocontroller/messages/create`
 Creates a new message.
@@ -230,27 +229,36 @@ Creates a new message.
 - `date` (datetime): Date of the message
 - `sender_type` (str): Type of sender ('assistant', 'user', 'system')
 
-**Returns:** Created message object with status 201, or errors with status 400
+**Returns:** Created Message object with status 201, or errors with status 400
+
+### POST `/pedocontroller/messages/initFirstMessage`
+Initializes the first system message in a conversation with baiter context.
+
+**Parameters:**
+- `idConversation` (int): ID of the conversation
+- `idBaiter` (int): ID of the baiter
+
+**Returns:** Created system Message object with baiter context
 
 ### POST `/pedocontroller/messages/create/ai`
-Creates a message from the decoy (AI).
+Creates a message from the baiter (AI) and sends it via pedo-connector.
 
 **Parameters:**
 - `conversation` (int): ID of the associated conversation
 - `message` (str): Content of the message
 - `date` (datetime): Date of the message
 
-**Returns:** Created message object and sends the message via pedo-connector
+**Returns:** Created Message object and sends the message via pedo-connector service
 
 ### POST `/pedocontroller/messages/create/pedophile`
-Creates a message from the subject.
+Creates a message from the pedophile and forwards it to pedo-hunter-api for analysis.
 
 **Parameters:**
 - `conversation` (int): ID of the associated conversation
 - `message` (str): Content of the message
 - `date` (datetime): Date of the message
 
-**Returns:** Created message object and forwards to pedo-hunter-api for analysis
+**Returns:** Created Message object and forwards to pedo-hunter-api for analysis
 
 ### PUT `/pedocontroller/messages/update`
 Updates an existing message.
@@ -261,7 +269,7 @@ Updates an existing message.
 - `message` (str): Content of the message
 - `date` (datetime): Date of the message
 
-**Returns:** Updated message object, or error 404 if not found
+**Returns:** Updated Message object, or error 404 if not found
 
 ### DELETE `/pedocontroller/messages/delete`
 Deletes a message.
@@ -284,29 +292,20 @@ Retrieves all messages.
 
 **Parameters:** None
 
-**Returns:** List of all message objects
+**Returns:** List of all Message objects
 
 ### POST `/pedocontroller/messages/findBy`
-Searches for messages based on criteria.
+Searches for messages based on criteria with optional ordering.
 
 **Parameters (all optional):**
 - `id` (int): Unique identifier
 - `conversation` (int): ID of the conversation
 - `date` (datetime): Date of the message
-- `order_by` (str): Field to sort by
+- `order_by` (str): Field to sort by (e.g., 'date')
 
-**Returns:** List of matching message objects
+**Returns:** List of matching Message objects (ordered if specified)
 
-### POST `/pedocontroller/messages/initFirstMessage`
-Initializes the first message in a conversation.
-
-**Parameters:**
-- `idConversation` (int): ID of the conversation
-- `idBaiter` (int): ID of the decoy
-
-**Returns:** Created system message object with decoy context
-
-## Platform Integration
+## Social Network Endpoints
 
 ### POST `/pedocontroller/socialnetworks/create`
 Creates a new social network.
@@ -315,7 +314,7 @@ Creates a new social network.
 - `name` (str): Name of the social network
 - `token` (str): Access token for the social network
 
-**Returns:** Created social network object with status 201, or errors with status 400
+**Returns:** Created SocialNetwork object with status 201, or errors with status 400
 
 ### PUT `/pedocontroller/socialnetworks/update`
 Updates an existing social network.
@@ -325,7 +324,7 @@ Updates an existing social network.
 - `name` (str): Name of the social network
 - `token` (str): Access token for the social network
 
-**Returns:** Updated social network object, or error 404 if not found
+**Returns:** Updated SocialNetwork object, or error 404 if not found
 
 ### DELETE `/pedocontroller/socialnetworks/delete`
 Deletes a social network.
@@ -341,14 +340,14 @@ Retrieves a specific social network.
 **Parameters:**
 - `id` (int): Unique identifier of the social network (query parameter)
 
-**Returns:** Social network object, or error 404 if not found
+**Returns:** SocialNetwork object, or error 404 if not found
 
 ### GET `/pedocontroller/socialnetworks/findAll`
 Retrieves all social networks.
 
 **Parameters:** None
 
-**Returns:** List of all social network objects
+**Returns:** List of all SocialNetwork objects
 
 ### POST `/pedocontroller/socialnetworks/findBy`
 Searches for social networks based on criteria.
@@ -357,85 +356,34 @@ Searches for social networks based on criteria.
 - `id` (int): Unique identifier
 - `name` (str): Name of the social network
 
-**Returns:** List of matching social network objects
+**Returns:** List of matching SocialNetwork objects
 
-## Authentication
+## Database Configuration
 
-### POST `/pedocontroller/auth/login`
-Authenticates a user and provides an access token.
+The application uses PostgreSQL with the following configuration:
+- **Database Name**: PedoStocker
+- **Host**: 127.0.0.1
+- **Port**: 5432
+- **User**: user
+- **Password**: password
 
-**Parameters:**
-- `username` (str): Username
-- `password` (str): Password
+## Allowed Hosts
 
-**Returns:** JWT token and user information with status 200, or error with status 401
+The application accepts requests from the following hosts:
+- pedo-stocker
+- pedo-connector
+- pedo-observer
+- pedo-hunter-api
+- pedo-meter-api
+- pedo-controller
+- localhost
+- 127.0.0.1
 
-### POST `/pedocontroller/auth/refresh`
-Refreshes an existing authentication token.
+## Notes
 
-**Parameters:**
-- `refresh_token` (str): Refresh token from previous login
-
-**Returns:** New JWT token with status 200, or error with status 401
-
-### POST `/pedocontroller/auth/logout`
-Invalidates the current authentication token.
-
-**Parameters:**
-- Authorization header with token
-
-**Returns:** Success message with status 200
-
-## System Status
-
-### GET `/pedocontroller/status`
-Checks the overall system status.
-
-**Parameters:** None
-
-**Returns:** System health information with component statuses
-
-### GET `/pedocontroller/status/db`
-Checks the database connection status.
-
-**Parameters:** None
-
-**Returns:** Database connection information and status
-
-### GET `/pedocontroller/status/ai`
-Checks the AI system status.
-
-**Parameters:** None
-
-**Returns:** AI system status and available models
-
-## Analytics
-
-### GET `/pedocontroller/analytics/conversations`
-Retrieves analytics about conversations.
-
-**Parameters (all optional):**
-- `start_date` (datetime): Start date for the analysis
-- `end_date` (datetime): End date for the analysis
-- `socialNetwork` (int): ID of the social network
-
-**Returns:** Conversation metrics and statistics
-
-### GET `/pedocontroller/analytics/subjects`
-Retrieves analytics about subject profiles.
-
-**Parameters (all optional):**
-- `start_date` (datetime): Start date for the analysis
-- `end_date` (datetime): End date for the analysis
-
-**Returns:** Subject profile metrics and risk distribution
-
-### GET `/pedocontroller/analytics/messages`
-Retrieves analytics about message content and patterns.
-
-**Parameters (all optional):**
-- `start_date` (datetime): Start date for the analysis
-- `end_date` (datetime): End date for the analysis
-- `conversation` (int): ID of a specific conversation
-
-**Returns:** Message frequency, patterns, and content analysis
+- All endpoints require appropriate HTTP methods as specified
+- Date parameters should be in ISO format (e.g., '2023-06-10T12:00:00Z')
+- The system automatically initializes conversations with a context message from the baiter
+- AI messages are automatically forwarded to the pedo-connector service
+- Pedophile messages trigger analysis via the pedo-hunter-api service
+- All API responses follow REST conventions with appropriate HTTP status codes
