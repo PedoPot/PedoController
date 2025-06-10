@@ -38,7 +38,7 @@ def create_ai_message(request):
     response = create_message(data)
 
     if response.status_code == 201:
-        url = "http://pedo-connector:9341/sendDirectMessage"
+        url = "http://pedo-connector/sendDirectMessage"
         headers = {
             "Content-Type": "application/json",
         }
@@ -68,7 +68,7 @@ def create_pedophile_message(request):
     
     response = create_message(data)
     if response.status_code == 201:
-        url = "http://pedo-hunter-api:9344/chat"
+        url = "http://pedo-hunter-api:9341/chat"
         
         headers = {
             "Content-Type": "application/json",
@@ -192,14 +192,13 @@ def find_by_messages(request):
     if 'date' in request.data:
         filters['date'] = request.data['date']
     
-    return find_by_messages_function(filters)
+    return find_by_messages_function(filters, order_by=request.data.get('order_by', None))
 
 def find_by_messages_function(filters, order_by=None):
     messages = Message.objects.filter(**filters)
     if order_by:
         messages = messages.order_by(order_by)
-    serializer = MessageSerializer(messages, many=True)
-    print("serializer", serializer.data)
+    serializer = MessageSerializer(messages, many=True)    
     return Response(serializer.data)
 
 def initFirstMessage(idConversation, idBaiter):
@@ -209,3 +208,4 @@ def initFirstMessage(idConversation, idBaiter):
     data['date'] = '1970-01-01T00:00:00Z'
     data['message'] = Baiter.objects.get(id=idBaiter).get_context()
     return create_message(data)
+    

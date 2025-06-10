@@ -135,3 +135,22 @@ def find_by_conversations(request):
     messages = ConversationModel.objects.filter(**filters)
     serializer = ConversationSerializer(messages, many=True)
     return Response(serializer.data)
+
+def find_by_conversations_function(filters, order_by=None):
+    conversations = ConversationModel.objects.filter(**filters)
+    if order_by:
+        conversations = conversations.order_by(order_by["name"])
+        if order_by["sort"] == "DESC":
+            conversations = conversations.reverse()
+    serializer = ConversationSerializer(conversations, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def get_conversations(request):
+    response = find_by_conversations(request)
+    data = response.data  # Extract the data attribute from the Response object
+    first = (request.data['numberPage'] - 1) * request.data['numberResults']
+    last = request.data['numberPage'] * request.data['numberResults']
+    sliced_data = data[first:last]
+    return Response(sliced_data)
